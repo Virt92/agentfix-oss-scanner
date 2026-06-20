@@ -1,0 +1,43 @@
+{
+  "name": "agentfix-mini-scanner",
+  "version": "1.0.0",
+  "description": "Minimal open-source scanner for AI-agent readiness — 8 of the 33 signals AgentFix's full audit covers. Zero dependencies, Node 18+.",
+  "type": "module",
+  "main": "./index.mjs",
+  "bin": {
+    "agentfix-scan": "./cli.mjs"
+  },
+  "exports": {
+    ".": "./index.mjs"
+  },
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "files": [
+    "index.mjs",
+    "cli.mjs",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "agent-readiness",
+    "llms.txt",
+    "llms-full.txt",
+    "mcp",
+    "a2a",
+    "schema.org",
+    "ai-seo",
+    "geo",
+    "generative-engine-optimization"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentfix-pro/oss-scanner.git"
+  },
+  "homepage": "https://agentfix.pro",
+  "author": "AgentFix"
+}
