@@ -1,7 +1,17 @@
 {
   "name": "agentfix-mini-scanner",
-  "version": "1.0.0",
-  "description": "Minimal open-source scanner for AI-agent readiness — 8 of the 33 signals AgentFix's full audit covers. Zero dependencies, Node 18+.",
+  "version": "1.1.1",
+  "description": "Minimal open-source scanner for AI-agent readiness — 12 of the 33 signals AgentFix's full audit covers. Zero dependencies, Node 18+.",
+  "funding": [
+    {
+      "type": "ko-fi",
+      "url": "https://ko-fi.com/agentfix"
+    },
+    {
+      "type": "individual",
+      "url": "https://agentfix.pro/pricing"
+    }
+  ],
   "type": "module",
   "main": "./index.mjs",
   "bin": {
@@ -36,7 +46,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agentfix-pro/oss-scanner.git"
+    "url": "https://github.com/Virt92/agentfix-oss-scanner.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Virt92/agentfix-oss-scanner/issues"
   },
   "homepage": "https://agentfix.pro",
   "author": "AgentFix"

@@ -39,7 +39,7 @@ const c = {
 };
 
 console.log("");
-console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}— 8 of 33 signals${c.reset}`);
+console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}— 12 of 33 signals${c.reset}`);
 console.log(`Target: ${report.url}`);
 console.log("");
 

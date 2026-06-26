@@ -1,7 +1,7 @@
-// agentfix-mini-scanner — 8 AI-agent-readiness checks.
+// agentfix-mini-scanner — 12 AI-agent-readiness checks.
 //
 // This is the OPEN-SOURCE subset of AgentFix's commercial scanner (which
-// runs 33 signals across 7 categories). The 8 checks here cover the most
+// runs 33 signals across 7 categories). The 12 checks here cover the most
 // load-bearing discovery surfaces — if your site passes all of them, you're
 // already ahead of ~95% of the web; if it fails most, the full audit at
 // https://agentfix.pro will tell you exactly what's missing and a $29 pack
@@ -10,7 +10,7 @@
 // Zero dependencies. Single file. Node 18+.
 
 const UA =
-  "Mozilla/5.0 (compatible; agentfix-mini-scanner/1.0; +https://agentfix.pro)";
+  "Mozilla/5.0 (compatible; agentfix-mini-scanner/1.1; +https://agentfix.pro)";
 const TIMEOUT_MS = 8000;
 
 /**
@@ -48,10 +48,14 @@ export async function scan(url) {
     checkLlmsFullTxt(normalized),
     checkRobotsAllowsAi(normalized),
     checkOrgSchema(normalized),
+    checkWebSiteSchema(normalized),
     checkMcpServerCard(normalized),
     checkA2AAgentCard(normalized),
     checkSitemap(normalized),
     checkLinkHeader(normalized),
+    checkOpenApi(normalized),
+    checkApiCatalog(normalized),
+    checkOAuthProtectedResource(normalized),
   ]);
 
   return finalise(url, startedAt, checks);
@@ -195,6 +199,45 @@ async function checkSitemap(base) {
   );
 }
 
+async function checkWebSiteSchema(base) {
+  return await safeCheck(
+    "website_schema",
+    "schema.org WebSite JSON-LD",
+    "schema",
+    "Add a WebSite JSON-LD block with `potentialAction: SearchAction` so Google shows a sitelinks search box and agents discover your in-site search.",
+    async () => {
+      const r = await fetchText(base);
+      if (!r) return { status: "fail", detail: "Homepage not reachable" };
+      const blocks = [
+        ...r.body.matchAll(
+          /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi
+        ),
+      ];
+      if (!blocks.length)
+        return { status: "fail", detail: "No JSON-LD blocks on homepage" };
+      for (const m of blocks) {
+        try {
+          const data = JSON.parse(m[1].trim());
+          const found = findTypeInGraph(data, "WebSite");
+          if (found) {
+            const hasSearch = !!(
+              found.potentialAction &&
+              JSON.stringify(found.potentialAction).includes("SearchAction")
+            );
+            return {
+              status: "pass",
+              detail: hasSearch ? "WebSite + SearchAction" : "WebSite (no SearchAction)",
+            };
+          }
+        } catch {
+          /* keep scanning */
+        }
+      }
+      return { status: "fail", detail: "JSON-LD present but no @type: WebSite found" };
+    }
+  );
+}
+
 async function checkLinkHeader(base) {
   return await safeCheck(
     "link_header",
@@ -215,6 +258,58 @@ async function checkLinkHeader(base) {
       if (hits === 0)
         return { status: "fail", detail: "Link header present but advertises nothing useful" };
       return { status: "pass", detail: `${hits} agent-discovery rel values` };
+    }
+  );
+}
+
+async function checkOpenApi(base) {
+  return await safeCheck(
+    "openapi_json",
+    "/openapi.json (OpenAPI 3.x service-desc)",
+    "agent_protocols",
+    "Publish an OpenAPI 3.x document at /openapi.json so agents can discover and invoke your HTTP API. Even a 3-endpoint stub counts.",
+    async () => {
+      const r = await fetchJson(`${base}/openapi.json`);
+      if (!r) return { status: "fail", detail: "/openapi.json missing or non-JSON" };
+      const v = r.data?.openapi || r.data?.swagger;
+      if (!v) return { status: "fail", detail: "File present but missing `openapi`/`swagger` version field" };
+      const paths = r.data?.paths ? Object.keys(r.data.paths).length : 0;
+      return { status: "pass", detail: `OpenAPI ${v}, ${paths} paths` };
+    }
+  );
+}
+
+async function checkApiCatalog(base) {
+  return await safeCheck(
+    "api_catalog",
+    "/.well-known/api-catalog (RFC 9727 linkset+json)",
+    "agent_protocols",
+    "Publish a linkset+json catalog at /.well-known/api-catalog listing every machine-readable doc you serve (OpenAPI, llms.txt, agent-card).",
+    async () => {
+      const r = await fetchJson(`${base}/.well-known/api-catalog`);
+      if (!r) return { status: "fail", detail: "/.well-known/api-catalog missing or non-JSON" };
+      const links = Array.isArray(r.data?.linkset?.[0]?.["service-desc"])
+        ? r.data.linkset[0]["service-desc"].length
+        : Array.isArray(r.data?.linkset)
+        ? r.data.linkset.length
+        : 0;
+      return { status: "pass", detail: `${links} catalog entries` };
+    }
+  );
+}
+
+async function checkOAuthProtectedResource(base) {
+  return await safeCheck(
+    "oauth_protected_resource",
+    "/.well-known/oauth-protected-resource (RFC 9728)",
+    "agent_protocols",
+    "Even for unauthenticated APIs, publishing this stub tells OAuth-aware agents how to negotiate auth — required by some MCP clients.",
+    async () => {
+      const r = await fetchJson(`${base}/.well-known/oauth-protected-resource`);
+      if (!r) return { status: "fail", detail: "Endpoint missing or non-JSON" };
+      const resource = r.data?.resource || r.data?.authorization_servers;
+      if (!resource) return { status: "fail", detail: "JSON present but no `resource`/`authorization_servers` field" };
+      return { status: "pass", detail: "RFC 9728 metadata present" };
     }
   );
 }
