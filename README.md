@@ -9,6 +9,16 @@ site passes all twelve you're ahead of ~95% of the web. If it fails most, the
 full audit + ready-to-install fix pack at [agentfix.pro](https://agentfix.pro)
 will close the gap.
 
+### See it visually — the AgentFix Workspace iceberg
+
+For a free interactive visualisation of what AI agents look for, paste any URL into
+[workspace.agentfix.pro](https://workspace.agentfix.pro). The Agent Lens window renders
+your site as an iceberg: the tip is what classic Google indexers see, just under the
+waterline is what AI agents reach for (llms.txt, schema, robots), deeper is the
+agent-native protocol layer (A2A, MCP, OpenAPI), and the depths are signals nobody
+ships yet (ACP/UCP commerce, streaming corpus). Same 12 checks as this CLI, rendered
+side-by-side with Google vs AI vs Optimal.
+
 ```
 $ npx agentfix-mini-scanner example.com
 
@@ -114,6 +124,8 @@ Two reasons:
 
 ## Changelog
 
+- **1.1.1** (2026-06-27) — added Workspace iceberg link to README. Live
+  visualisation companion at [workspace.agentfix.pro](https://workspace.agentfix.pro).
 - **1.1.0** (2026-06-26) — added WebSite schema, openapi.json, api-catalog,
   oauth-protected-resource checks. 8 → 12 signals. Fixed GitHub repository URL.
 - **1.0.0** (2026-06-19) — initial release with 8 checks.
