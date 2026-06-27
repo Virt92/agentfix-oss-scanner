@@ -4,10 +4,18 @@ A tiny, zero-dependency, MIT-licensed scanner that checks whether your website
 is discoverable and usable by modern AI agents (ChatGPT, Claude, Perplexity,
 Gemini, MCP clients).
 
+> **Bad score? Skip the spec rabbit-hole.** [**AgentFix Pack**](https://agentfix.pro)
+> scans your site across all 33 signals and emails you a ready-to-install ZIP
+> with your real `llms.txt`, schema, A2A `agent-card`, MCP `server-card`, and
+> install guides for WordPress / Webflow / Tilda / Shopify / cPanel. One-time
+> $1 Mini · $29 Pack · $99 Pro (drift monitoring). No subscription.
+>
+> [**→ Scan your site at agentfix.pro**](https://agentfix.pro)
+
 It runs **12 of the 33 signals** the commercial AgentFix scanner uses. If your
 site passes all twelve you're ahead of ~95% of the web. If it fails most, the
 full audit + ready-to-install fix pack at [agentfix.pro](https://agentfix.pro)
-will close the gap.
+closes the gap in minutes.
 
 ### See it visually — the AgentFix Workspace iceberg
 
@@ -121,6 +129,16 @@ Two reasons:
    ships you a personalised ZIP that closes the gaps in a few minutes. The
    OSS scanner is the on-ramp to the paid product, and we're upfront about
    that.
+
+## When to use what
+
+| Goal | Tool |
+|---|---|
+| Quick CI check / curiosity / dev workflow | **This CLI** (free, MIT, npx) |
+| You see your score is low and want it fixed today | **[AgentFix Pack](https://agentfix.pro)** $29 — ZIP with your llms.txt, schema, agent-card, server-card, install guides |
+| You only need llms.txt to start | **AgentFix Mini** $1 |
+| You want monthly drift monitoring + diff emails | **AgentFix Pro** $99 |
+| You want to see what AI agents look for, visually | **[workspace.agentfix.pro](https://workspace.agentfix.pro)** (free, interactive iceberg) |
 
 ## Changelog
 
