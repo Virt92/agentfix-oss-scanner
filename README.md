@@ -142,6 +142,8 @@ Two reasons:
 
 ## Changelog
 
+- **1.1.2** (2026-06-27) — README pivoted to lead with the AgentFix Pack pitch
+  + when-to-use-what matrix. Workspace iceberg companion link prominent.
 - **1.1.1** (2026-06-27) — added Workspace iceberg link to README. Live
   visualisation companion at [workspace.agentfix.pro](https://workspace.agentfix.pro).
 - **1.1.0** (2026-06-26) — added WebSite schema, openapi.json, api-catalog,

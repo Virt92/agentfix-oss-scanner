@@ -1,7 +1,7 @@
 {
   "name": "agentfix-mini-scanner",
-  "version": "1.1.1",
-  "description": "Minimal open-source scanner for AI-agent readiness — 12 of the 33 signals AgentFix's full audit covers. Zero dependencies, Node 18+.",
+  "version": "1.1.2",
+  "description": "Free CLI to scan AI-agent readiness (12/33 signals, MIT, zero deps, Node 18+). Bad score? Get ready-to-install ZIP fix-pack with llms.txt, schema, A2A, MCP from $1 at agentfix.pro.",
   "funding": [
     {
       "type": "ko-fi",
