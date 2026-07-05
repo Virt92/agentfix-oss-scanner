@@ -1,7 +1,7 @@
 {
   "name": "agentfix-mini-scanner",
-  "version": "1.1.2",
-  "description": "Free CLI to scan AI-agent readiness (12/33 signals, MIT, zero deps, Node 18+). Bad score? Get ready-to-install ZIP fix-pack with llms.txt, schema, A2A, MCP from $1 at agentfix.pro.",
+  "version": "1.1.3",
+  "description": "Free CLI to scan AI-agent readiness (12/33 signals, MIT, zero deps, Node 18+). Checks llms.txt, MCP server-card, A2A agent-card, OpenAPI, schema.org, RFC 9727/9728. Bad score? Get ready-to-install ZIP fix-pack from $1 at agentfix.pro.",
   "funding": [
     {
       "type": "ko-fi",
@@ -34,14 +34,33 @@
   },
   "keywords": [
     "agent-readiness",
+    "ai-agent-readiness",
     "llms.txt",
     "llms-full.txt",
     "mcp",
+    "model-context-protocol",
     "a2a",
+    "agent-card",
+    "server-card",
     "schema.org",
+    "jsonld",
     "ai-seo",
     "geo",
-    "generative-engine-optimization"
+    "generative-engine-optimization",
+    "llm-seo",
+    "chatgpt",
+    "claude",
+    "perplexity",
+    "gptbot",
+    "claudebot",
+    "openapi",
+    "well-known",
+    "rfc-9727",
+    "rfc-9728",
+    "ai-crawler",
+    "agentic-web",
+    "robots-txt",
+    "sitemap"
   ],
   "license": "MIT",
   "repository": {
