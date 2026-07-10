@@ -148,6 +148,11 @@ Two reasons:
 
 ## Changelog
 
+- **1.1.4** (2026-07-10) - dropped hardcoded "12 of 33 signals" phrasing;
+  README, help banner and package description now point to
+  [agentfix.pro/methodology](https://agentfix.pro/methodology) as the single
+  source of truth for the checklist (currently 34 signals across 7 categories,
+  and the number will keep evolving). CLI checks unchanged.
 - **1.1.3** (2026-07-05) - README polish + npm/Node badges. Package keywords
   expanded (MCP, A2A, GEO, OpenAPI, RFC 9727/9728, GPTBot, ClaudeBot) so npm
   and GitHub search surface the scanner for people looking to fix llms.txt,
