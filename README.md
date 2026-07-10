@@ -10,15 +10,16 @@ is discoverable and usable by modern AI agents (ChatGPT, Claude, Perplexity,
 Gemini, MCP clients).
 
 > **Bad score? Skip the spec rabbit-hole.** [**AgentFix Pack**](https://agentfix.pro)
-> scans your site across all 33 signals and emails you a ready-to-install ZIP
+> scans your site across the full AI-agent readiness checklist and emails you a ready-to-install ZIP
 > with your real `llms.txt`, schema, A2A `agent-card`, MCP `server-card`, and
 > install guides for WordPress / Webflow / Tilda / Shopify / cPanel. One-time
 > $1 Mini · $29 Pack · $99 Pro (drift monitoring). No subscription.
 >
 > [**→ Scan your site at agentfix.pro**](https://agentfix.pro)
 
-It runs **12 of the 33 signals** the commercial AgentFix scanner uses. If your
-site passes all twelve you're ahead of ~95% of the web. If it fails most, the
+It runs **the discovery-critical subset** of signals the commercial AgentFix scanner uses
+(see the full [AI-agent readiness checklist](https://agentfix.pro/methodology)). If your
+site passes all twelve here you're ahead of ~95% of the web. If it fails most, the
 full audit + ready-to-install fix pack at [agentfix.pro](https://agentfix.pro)
 closes the gap in minutes.
 
@@ -35,7 +36,7 @@ side-by-side with Google vs AI vs Optimal.
 ```
 $ npx agentfix-mini-scanner example.com
 
-AgentFix Mini Scanner - 12 of 33 signals
+AgentFix Mini Scanner - discovery-critical subset
 Target: https://example.com
 
   PASS  /llms.txt accessible
@@ -113,7 +114,7 @@ for (const c of report.checks) {
 report `status: "fail"` with the cause in `detail`. Network timeout per check
 is 8 seconds.
 
-## What this scanner does NOT check (the other 21 signals)
+## What this scanner does NOT check (the rest of the checklist)
 
 The commercial AgentFix scanner additionally evaluates: declarative shadow
 DOM accessibility, MCP tool input-schema validity, A2A skill descriptors,
@@ -162,7 +163,7 @@ Two reasons:
 ## Support development
 
 If this scanner helps you, [buy us a coffee on Ko-fi](https://ko-fi.com/agentfix) ☕.
-Every coffee funds the next check; we ship the remaining 21 signals from the
+Every coffee funds the next check; we ship additional signals from the
 commercial scanner one OSS release at a time.
 
 [![Ko-fi](https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/agentfix)

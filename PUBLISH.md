@@ -13,13 +13,13 @@ cd oss-scanner
 # we create a separate history for the public release).
 git init -b main
 git add .
-git commit -m "Initial release — 8 of 33 AgentFix signals, MIT"
+git commit -m "Initial release - subset of AgentFix signals, MIT"
 
 # Create the public repo + push (requires the `gh` CLI logged in).
 # Adjust the org/name to whatever you own.
 gh repo create agentfix-pro/oss-scanner \
   --public \
-  --description "Open-source mini scanner for AI-agent readiness — 8 of the 33 signals AgentFix audits" \
+  --description "Open-source mini scanner for AI-agent readiness - subset of signals AgentFix audits" \
   --source=. \
   --push \
   --homepage "https://agentfix.pro"
@@ -57,5 +57,5 @@ Once the GitHub URL is live, add it to:
 - `api/src/app/about/page.tsx` — under "How it's different"
 - `api/src/app/changelog/page.tsx` — new top entry: `OSS mini-scanner released`
 
-A small AgentFix-side patch can do this in one deploy — keep the GitHub URL
+A small AgentFix-side patch can do this in one deploy - keep the GitHub URL
 in a single constant so future renames are one-line changes.

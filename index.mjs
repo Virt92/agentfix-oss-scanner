@@ -1,8 +1,9 @@
-// agentfix-mini-scanner — 12 AI-agent-readiness checks.
+// agentfix-mini-scanner - 12 AI-agent-readiness checks.
 //
 // This is the OPEN-SOURCE subset of AgentFix's commercial scanner (which
-// runs 33 signals across 7 categories). The 12 checks here cover the most
-// load-bearing discovery surfaces — if your site passes all of them, you're
+// runs the full checklist across 7 categories, see
+// https://agentfix.pro/methodology). The 12 checks here cover the most
+// load-bearing discovery surfaces - if your site passes all of them, you're
 // already ahead of ~95% of the web; if it fails most, the full audit at
 // https://agentfix.pro will tell you exactly what's missing and a $29 pack
 // ships ready-to-install files.

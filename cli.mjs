@@ -6,7 +6,7 @@ const wantJson = args.includes("--json");
 const urlArg = args.find((a) => !a.startsWith("--"));
 
 if (!urlArg || args.includes("--help") || args.includes("-h")) {
-  console.log(`agentfix-mini-scanner — 8 AI-agent-readiness checks
+  console.log(`agentfix-mini-scanner - AI-agent-readiness checks
 
 Usage:
   agentfix-scan <url> [--json]
@@ -15,7 +15,8 @@ Examples:
   agentfix-scan example.com
   agentfix-scan https://acme.com --json
 
-The full 33-check audit + fix pack lives at https://agentfix.pro.`);
+The full audit + fix pack lives at https://agentfix.pro.
+See the full checklist at https://agentfix.pro/methodology.`);
   process.exit(urlArg ? 0 : 1);
 }
 
@@ -39,7 +40,7 @@ const c = {
 };
 
 console.log("");
-console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}— 12 of 33 signals${c.reset}`);
+console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}- discovery-critical subset${c.reset}`);
 console.log(`Target: ${report.url}`);
 console.log("");
 
@@ -65,7 +66,7 @@ console.log(
 if (report.summary.fail > 0) {
   console.log("");
   console.log(
-    `${c.dim}Get the full 33-check audit + a $29 ready-to-install fix pack:${c.reset}`
+    `${c.dim}Get the full audit + a $29 ready-to-install fix pack:${c.reset}`
   );
   console.log(`  ${c.cyan}https://agentfix.pro/?ref=oss${c.reset}`);
 }
