@@ -10,7 +10,7 @@ import { scan } from "../index.mjs";
 test("scan returns a report shape", async () => {
   const report = await scan("https://agentfix.pro");
   assert.ok(Array.isArray(report.checks));
-  assert.equal(report.checks.length, 12);
+  assert.equal(report.checks.length, 16);
   assert.equal(typeof report.summary.score, "number");
   assert.ok(report.summary.score >= 0 && report.summary.score <= 100);
   assert.match(report.summary.grade, /^[A-F]$/);
@@ -30,13 +30,13 @@ test("URL without protocol is auto-prefixed with https://", async () => {
   const report = await scan("agentfix.pro");
   assert.equal(report.url, "agentfix.pro"); // raw input preserved
   // the underlying checks still resolve; we trust the prior shape test
-  assert.equal(report.checks.length, 12);
+  assert.equal(report.checks.length, 16);
 });
 
 test("invalid host fails gracefully without throwing", async () => {
   const report = await scan("https://this-host-does-not-exist-9z9z9z.invalid");
   // every check should fail with an error message, but the overall call
   // must still resolve to a report shape, so the binary keeps working.
-  assert.equal(report.checks.length, 12);
+  assert.equal(report.checks.length, 16);
   assert.ok(report.checks.every((c) => c.status === "fail" || c.status === "skip"));
 });

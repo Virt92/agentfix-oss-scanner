@@ -1,7 +1,7 @@
 {
   "name": "agentfix-mini-scanner",
-  "version": "1.1.4",
-  "description": "Free CLI to scan AI-agent readiness (discovery-critical subset, MIT, zero deps, Node 18+). Checks llms.txt, MCP server-card, A2A agent-card, OpenAPI, schema.org, RFC 9727/9728. Full checklist at agentfix.pro/methodology. Bad score? Get ready-to-install ZIP fix-pack from $1 at agentfix.pro.",
+  "version": "1.2.0",
+  "description": "Free CLI to scan AI-agent readiness (discovery-critical subset, MIT, zero deps, Node 18+). 16 checks: llms.txt, MCP server-card, A2A agent-card, OpenAPI, schema.org, RFC 9727/9728, plus commerce discovery layer (agent-checkout.json, agent-signup.json, llms-pay.md) and skill.md. Full checklist at agentfix.pro/methodology. Bad score? Get ready-to-install ZIP fix-pack from $1 at agentfix.pro.",
   "funding": [
     {
       "type": "ko-fi",
@@ -21,7 +21,7 @@
     ".": "./index.mjs"
   },
   "scripts": {
-    "test": "node --test test/"
+    "test": "node --test test/basic.test.mjs"
   },
   "files": [
     "index.mjs",
@@ -37,6 +37,12 @@
     "ai-agent-readiness",
     "llms.txt",
     "llms-full.txt",
+    "llms-pay",
+    "agent-checkout",
+    "agent-signup",
+    "skill-md",
+    "ai-commerce",
+    "agentic-commerce",
     "mcp",
     "model-context-protocol",
     "a2a",

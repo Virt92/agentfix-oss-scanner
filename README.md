@@ -19,9 +19,14 @@ Gemini, MCP clients).
 
 It runs **the discovery-critical subset** of signals the commercial AgentFix scanner uses
 (see the full [AI-agent readiness checklist](https://agentfix.pro/methodology)). If your
-site passes all twelve here you're ahead of ~95% of the web. If it fails most, the
+site passes all sixteen here you're ahead of ~95% of the web. If it fails most, the
 full audit + ready-to-install fix pack at [agentfix.pro](https://agentfix.pro)
 closes the gap in minutes.
+
+**New in 1.2.0** - four commerce and content-negotiation checks: `/.well-known/agent-checkout.json`,
+`/.well-known/agent-signup.json`, `/llms-pay.md`, and `/skill.md`. See the
+[three commerce discovery files](https://agentfix.pro/blog/three-commerce-discovery-files)
+post for the emerging AI-shopping-agent discovery layer.
 
 ### See it visually - the AgentFix Workspace iceberg
 
@@ -29,14 +34,14 @@ For a free interactive visualisation of what AI agents look for, paste any URL i
 [workspace.agentfix.pro](https://workspace.agentfix.pro). The Agent Lens window renders
 your site as an iceberg: the tip is what classic Google indexers see, just under the
 waterline is what AI agents reach for (llms.txt, schema, robots), deeper is the
-agent-native protocol layer (A2A, MCP, OpenAPI), and the depths are signals nobody
-ships yet (ACP/UCP commerce, streaming corpus). Same 12 checks as this CLI, rendered
-side-by-side with Google vs AI vs Optimal.
+agent-native protocol layer (A2A, MCP, OpenAPI), and the depths are the emerging
+commerce layer (agent-checkout.json, agent-signup.json, llms-pay.md). Same 16 checks
+as this CLI, rendered side-by-side with Google vs AI vs Optimal.
 
 ```
 $ npx agentfix-mini-scanner example.com
 
-AgentFix Mini Scanner - discovery-critical subset
+AgentFix Mini Scanner - 16 discovery-critical checks (v1.2)
 Target: https://example.com
 
   PASS  /llms.txt accessible
@@ -46,24 +51,25 @@ Target: https://example.com
         → Add /llms-full.txt with the long-form text content of your site.
   PASS  robots.txt allows AI crawlers
         Mentions: gptbot, claudebot
-  FAIL  schema.org Organization JSON-LD
-        No JSON-LD blocks found in homepage HTML
-        → Embed a <script type="application/ld+json"> Organization block.
+  FAIL  /.well-known/agent-checkout.json (commerce discovery)
+        Endpoint missing or non-JSON
+        → Publish /.well-known/agent-checkout.json describing how AI shopping agents
+          complete a purchase on your site.
   ...
 
-Score: 50% (Grade D) - 6/12 passed
+Score: 44% (Grade F) - 7/16 passed
 ```
 
-## What's new in 1.1
+## What's new in 1.2.0
 
-Four additional checks added:
+Four commerce and content-negotiation checks added:
 
-- **schema.org WebSite + SearchAction** - sitelinks search box
-- **`/openapi.json`** - OpenAPI 3.x service-desc for agents
-- **`/.well-known/api-catalog`** - RFC 9727 linkset+json
-- **`/.well-known/oauth-protected-resource`** - RFC 9728 auth metadata
+- **`/.well-known/agent-checkout.json`** - commerce discovery for AI shopping agents
+- **`/.well-known/agent-signup.json`** - signup model + auth (guest-first, SSO)
+- **`/llms-pay.md`** - payments layer (providers, currencies, refunds, tiers)
+- **`/skill.md`** - clean markdown summary of your site for AI agents
 
-8 → 12 signals. Same zero dependencies.
+12 → 16 signals. Same zero dependencies.
 
 ## Install
 
@@ -95,6 +101,10 @@ Node 18+ required (built on the global `fetch`).
 | 10 | `/openapi.json` (OpenAPI 3.x) | agent_protocols |
 | 11 | `/.well-known/api-catalog` (RFC 9727 linkset+json) | agent_protocols |
 | 12 | `/.well-known/oauth-protected-resource` (RFC 9728) | agent_protocols |
+| 13 | `/.well-known/agent-checkout.json` (AI-shopping checkout flow) | commerce |
+| 14 | `/.well-known/agent-signup.json` (signup model, auth options) | commerce |
+| 15 | `/llms-pay.md` (payments layer for AI agents) | commerce |
+| 16 | `/skill.md` (clean markdown summary for agents) | content |
 
 ## Programmatic use
 
@@ -103,7 +113,7 @@ import { scan } from "agentfix-mini-scanner";
 
 const report = await scan("https://acme.com");
 console.log(report.summary);
-//  { pass: 6, fail: 6, skip: 0, total: 12, score: 50, grade: "D" }
+//  { pass: 7, fail: 9, skip: 0, total: 16, score: 44, grade: "F" }
 
 for (const c of report.checks) {
   console.log(c.key, c.status, c.detail);
@@ -128,9 +138,9 @@ readiness, ACP/UCP commerce stubs, runtime ARIA fixes, and several more (see
 ## Why open-source the basics?
 
 Two reasons:
-1. We think *every* site owner should be able to check at least these twelve
-   signals for free, forever. They're the discovery foundation; without them
-   AI agents can't even find your content.
+1. We think *every* site owner should be able to check at least these sixteen
+   signals for free, forever. They're the discovery and commerce foundation;
+   without them AI agents can't find your content or transact with you.
 2. If you run this and your score is bad, the $29 fix pack at agentfix.pro
    ships you a personalised ZIP that closes the gaps in a few minutes. The
    OSS scanner is the on-ramp to the paid product, and we're upfront about
@@ -148,6 +158,10 @@ Two reasons:
 
 ## Changelog
 
+- **1.2.0** (2026-07-22) - added four commerce and content-negotiation checks:
+  `/.well-known/agent-checkout.json`, `/.well-known/agent-signup.json`,
+  `/llms-pay.md`, and `/skill.md`. New `commerce` category. 12 -> 16 signals.
+  Description, help banner and README updated. Zero new dependencies.
 - **1.1.4** (2026-07-10) - dropped hardcoded "12 of 33 signals" phrasing;
   README, help banner and package description now point to
   [agentfix.pro/methodology](https://agentfix.pro/methodology) as the single
@@ -179,7 +193,7 @@ MIT - see [LICENSE](LICENSE).
 
 ## Contributing
 
-PRs welcome for the twelve checks above. New checks belong in the commercial
+PRs welcome for the sixteen checks above. New checks belong in the commercial
 scanner so we can validate them against real buyer sites first; open an
 issue if you have a candidate signal worth promoting to the OSS version.
 

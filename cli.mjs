@@ -40,7 +40,7 @@ const c = {
 };
 
 console.log("");
-console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}- discovery-critical subset${c.reset}`);
+console.log(`${c.bold}AgentFix Mini Scanner${c.reset} ${c.dim}- 16 discovery-critical checks (v1.2)${c.reset}`);
 console.log(`Target: ${report.url}`);
 console.log("");
 

@@ -1,24 +1,24 @@
-// agentfix-mini-scanner - 12 AI-agent-readiness checks.
+// agentfix-mini-scanner - 16 AI-agent-readiness checks.
 //
 // This is the OPEN-SOURCE subset of AgentFix's commercial scanner (which
-// runs the full checklist across 7 categories, see
-// https://agentfix.pro/methodology). The 12 checks here cover the most
-// load-bearing discovery surfaces - if your site passes all of them, you're
-// already ahead of ~95% of the web; if it fails most, the full audit at
-// https://agentfix.pro will tell you exactly what's missing and a $29 pack
-// ships ready-to-install files.
+// runs the full checklist across 9 categories, see
+// https://agentfix.pro/methodology). The 16 checks here cover the most
+// load-bearing discovery surfaces plus the emerging commerce layer for
+// AI shopping agents. Pass them all and you're ahead of ~95% of the web;
+// fail most and the full audit at https://agentfix.pro pinpoints every
+// gap and ships a $29 ready-to-install fix pack.
 //
 // Zero dependencies. Single file. Node 18+.
 
 const UA =
-  "Mozilla/5.0 (compatible; agentfix-mini-scanner/1.1; +https://agentfix.pro)";
+  "Mozilla/5.0 (compatible; agentfix-mini-scanner/1.2; +https://agentfix.pro)";
 const TIMEOUT_MS = 8000;
 
 /**
  * @typedef {Object} CheckResult
  * @property {string} key       Machine-readable check ID.
  * @property {string} label     Human label.
- * @property {string} category  discovery | ai_policy | content | schema | agent_protocols
+ * @property {string} category  discovery | ai_policy | content | schema | agent_protocols | commerce
  * @property {"pass"|"fail"|"skip"} status
  * @property {string} detail    Short reason / what was found.
  * @property {string=} hint     Suggested fix.
@@ -34,7 +34,7 @@ const TIMEOUT_MS = 8000;
  */
 
 /**
- * Run all 8 checks against `url`. Always resolves — individual checks
+ * Run all 16 checks against `url`. Always resolves — individual checks
  * catch their own errors and report `fail` with the message in `detail`.
  *
  * @param {string} url
@@ -57,6 +57,10 @@ export async function scan(url) {
     checkOpenApi(normalized),
     checkApiCatalog(normalized),
     checkOAuthProtectedResource(normalized),
+    checkAgentCheckoutJson(normalized),
+    checkAgentSignupJson(normalized),
+    checkLlmsPayMd(normalized),
+    checkSkillMd(normalized),
   ]);
 
   return finalise(url, startedAt, checks);
@@ -311,6 +315,80 @@ async function checkOAuthProtectedResource(base) {
       const resource = r.data?.resource || r.data?.authorization_servers;
       if (!resource) return { status: "fail", detail: "JSON present but no `resource`/`authorization_servers` field" };
       return { status: "pass", detail: "RFC 9728 metadata present" };
+    }
+  );
+}
+
+async function checkAgentCheckoutJson(base) {
+  return await safeCheck(
+    "agent_checkout_json",
+    "/.well-known/agent-checkout.json (commerce discovery)",
+    "commerce",
+    "Publish /.well-known/agent-checkout.json describing how AI shopping agents complete a purchase on your site. See agentfix.pro/blog/three-commerce-discovery-files for the spec.",
+    async () => {
+      const r = await fetchJson(`${base}/.well-known/agent-checkout.json`);
+      if (!r) return { status: "fail", detail: "Endpoint missing or non-JSON" };
+      const v = r.data?.version || r.data?.spec_version || "unset";
+      const products = Array.isArray(r.data?.products) ? r.data.products.length : 0;
+      const providers = Array.isArray(r.data?.payment_providers)
+        ? r.data.payment_providers.length
+        : 0;
+      return {
+        status: "pass",
+        detail: `version=${v}, ${products} product(s), ${providers} provider(s)`,
+      };
+    }
+  );
+}
+
+async function checkAgentSignupJson(base) {
+  return await safeCheck(
+    "agent_signup_json",
+    "/.well-known/agent-signup.json (auth discovery)",
+    "commerce",
+    "Publish /.well-known/agent-signup.json describing your signup model (guest-first, SSO options) so AI shopping agents can transact without human account creation.",
+    async () => {
+      const r = await fetchJson(`${base}/.well-known/agent-signup.json`);
+      if (!r) return { status: "fail", detail: "Endpoint missing or non-JSON" };
+      const model = r.data?.signup_model || r.data?.model || "unset";
+      return { status: "pass", detail: `signup_model=${model}` };
+    }
+  );
+}
+
+async function checkLlmsPayMd(base) {
+  return await safeCheck(
+    "llms_pay_md",
+    "/llms-pay.md (payments layer for AI)",
+    "commerce",
+    "Publish /llms-pay.md at the site root describing your payment providers, currencies, refund policy and pricing tiers for AI shopping agents.",
+    async () => {
+      const r = await fetchText(`${base}/llms-pay.md`);
+      if (!r) return { status: "fail", detail: "/llms-pay.md missing" };
+      if (r.body.length < 100)
+        return { status: "fail", detail: "Under 100 bytes - likely a stub" };
+      return { status: "pass", detail: `${r.body.length} bytes` };
+    }
+  );
+}
+
+async function checkSkillMd(base) {
+  return await safeCheck(
+    "skill_md",
+    "/skill.md (agent-readable homepage)",
+    "content",
+    "Serve /skill.md - a clean markdown summary of your site (products, services, contact) so AI agents can read it without stripping HTML.",
+    async () => {
+      const r = await fetchText(`${base}/skill.md`);
+      if (!r) return { status: "fail", detail: "/skill.md missing" };
+      if (r.body.length < 100)
+        return { status: "fail", detail: "Under 100 bytes - likely a stub" };
+      const ct = r.headers.get("content-type") || "";
+      const isMd = /markdown|text\/plain/i.test(ct);
+      return {
+        status: "pass",
+        detail: `${r.body.length} bytes${isMd ? " (text/markdown)" : ""}`,
+      };
     }
   );
 }
